@@ -7,10 +7,11 @@ import {
   Picker,
   Switch,
   Button,
-  Modal,
+ 
+  Alert
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-
+import * as Animatable from 'react-native-animatable';
 class Reservation extends Component {
   constructor(props) {
     super(props);
@@ -20,7 +21,7 @@ class Reservation extends Component {
       hikeIn: false,
       date: new Date(),
       showCalendar: false,
-      showModal: false,
+ 
     };
   }
 
@@ -28,27 +29,47 @@ class Reservation extends Component {
     title: "Reserve Campsite",
   };
 
-  toggleModal() {
-    this.setState({ showModal: !this.state.showModal });
-  }
+  
 
-  handleReservation() {
-    console.log(JSON.stringify(this.state));
-    this.toggleModal();
-  }
+
+  handleAlert(){
+
+    Alert.alert(
+      'Begin Search?',
+     
+      
+
+      `Number of Campers: ${this.state.campers} \nHike in: ${this.state.hikeIn}\nDate:${this.state.date}`,
+      [
+        {
+            text: 'Cancel',
+            style: 'cancel',
+            onPress: () => this.resetForm()
+        },
+        {
+            text: 'OK',
+            onPress: () => this.resetForm()
+        }
+      ],
+      {cancelable: false}
+  );
+  console.log(JSON.stringify(this.state));
+}
+
   resetForm() {
     this.setState({
       campers: 1,
       hikeIn: false,
       date: new Date(),
       showCalendar: false,
-      showModal: false,
+      // showModal: false,
     });
   }
 
   render() {
     return (
       <ScrollView>
+      < Animatable.View animation='zoomIn' duration={2000} delay={1000}>
         <View style={styles.formRow}>
           <Text style={styles.formLabel}>Number of Campers</Text>
           <Picker
@@ -98,13 +119,19 @@ class Reservation extends Component {
         )}
         <View style={styles.formRow}>
           <Button
-            onPress={() => this.handleReservation()}
+       onPress={() => this.handleAlert()}
+        
             title="Search"
             color="#5637DD"
             accessibilityLabel="Tap me to search for available campsites to reserve"
           />
         </View>
-        <Modal
+
+
+
+
+
+        {/* <Modal
                     animationType={'slide'}
                     transparent={false}
                     visible={this.state.showModal}
@@ -130,7 +157,8 @@ class Reservation extends Component {
                             title='Close'
                         />
                     </View>
-                </Modal>
+                </Modal> */}
+                </Animatable.View>
       </ScrollView>
     );
   }
