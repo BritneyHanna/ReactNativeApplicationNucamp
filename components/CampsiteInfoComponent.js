@@ -8,7 +8,8 @@ import {
   StyleSheet,
   Button,
   Alert, 
-  PanResponder 
+  PanResponder,
+  Share
  
   
 } from "react-native";
@@ -80,6 +81,17 @@ const recognizeComment=({dx}) => (dx > 200) ? true : false;
 
 });
 
+const shareCampsite = (title, message, url) => {
+  Share.share({
+      title: title,
+      message: `${title}: ${message} ${url}`,
+      url: url
+  },{
+      dialogTitle: 'Share ' + title
+  });
+};
+
+
   if (campsite) {
     return (
       <Animatable.View
@@ -114,6 +126,15 @@ const recognizeComment=({dx}) => (dx > 200) ? true : false;
             reverse
             onPress={() => props.onShowModal()}
           />
+
+<Icon
+                            name={'share'}
+                            type='font-awesome'
+                            color='#5637DD'
+                            raised
+                            reverse
+                            onPress={() => shareCampsite(campsite.name, campsite.description, baseUrl + campsite.image)} 
+                        />
         </View>
       </Card>
       </Animatable.View>
